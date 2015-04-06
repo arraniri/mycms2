@@ -2,6 +2,8 @@
 require_once('includes/templateFunctions.php');
 
 $tmpl = new templateFunctions();
+$tmpl->setWidget('logoPosition','logo');
+$tmpl->setWidget('sidebarPosition','hello');
 $tmpl ->show();
 	if (isset($_REQUEST['task']))
 	{
