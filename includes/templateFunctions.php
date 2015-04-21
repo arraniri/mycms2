@@ -1,34 +1,39 @@
-<?php 
-
+<?php
 require_once('cmsBase.php');
-class TemplateFunctions extends CmsBase {
-
+class templateFunctions extends CmsBase{
+	//fungsi pengaturan template
 	var $templateName = 'default';
-	var $widgetPositions = array();
+	var $widgetPositions=array();
 
-	function show() {
-	require_once($this->getCurrentTemplatePath() . 'template.php');
+	function show ()
+	{
+		require_once($this->getCurrentTemplatePath().'template.php');
+
 	}
 
-	function getCurrentTemplatePath() {
-	return 'templates/' . $this->templateName . '/';
+	function getCurrentTemplatePath()
+	{
+		return 'templates/'.$this->templateName. '/';
 	}
 
-	function setTemplate($templateName) {
-	$this->templateName = $templateName;
+	function setTemplate ($templateName)
+	{
+		$this->templateName = $templateName;
 	}
 
-
-	function appOutput() {
-	require_once('includes/cmsApplication.php');
-	$app = new CmsApplication();
-	$app->run();
-	}
+	function appOutput()
+{
+    $appname = (isset($_REQUEST['app']))?$_REQUEST['app']:'default';
+    require_once('apps/'.$appname.'/'.$appname.'.php');
+    $application = ucfirst($appname).'Application';
+    $app = new $application();
+    $app->run();
+}
 
 	function widgetOutput($position='default')
-{
-    if(!empty($this->widgetPositions[$position]))
-    {
+	{
+	if(!empty($this->widgetPositions[$position]))
+	{
 	$widgets=$this->widgetPositions[$position];
 	foreach($widgets as $widgetObject)
 	{
@@ -38,22 +43,21 @@ class TemplateFunctions extends CmsBase {
 	$widgetclass=ucfirst($widgetName).'Widget';
 	$widget=new $widgetclass();
 	$widget->run($widgetName,$widgetParameters);
+		}
 	}
-    }
 }
-
-
 	function setWidget($position,$widgetName,$params=array())
-	{
+{
 	$widget=new StdClass;
 	$widget->name=$widgetName;
-    $widget->parameters=$params;
+	$widget->parameters=$params;
 
-	if(empty($this->widgetPositions[$position]))
+	if(empty($this->widgetPositions[$position])) 
 	{
-	$this->widgetPositions[$position]=array($widget);
-	} else {
-	array_push($this->widgetPositions[$position],$widgetName);
+$this->widgetPositions[$position]=array($widget);
+} else {
+	array_push($this->widgetPositions[$position],$widget);
+	}        
 	}
 	}
-}
+?>
