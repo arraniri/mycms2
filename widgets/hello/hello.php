@@ -2,10 +2,15 @@
 
 require_once('includes/cmsWidget.php');
 class HelloWidget extends CmsWidget{
+ 	function display()
+ {
 
-	function display()
+	$world = 'World!';
+	if(count($this->parameters)!=0)
 	{
-		echo 'Hello World!';
-	}
-	
-}
+	$world = $this->parameters['hello_to'];
+	}        
+	echo "Hello ".$world;
+ 	}
+ 
+  }
